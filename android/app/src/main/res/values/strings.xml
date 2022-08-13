@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Relishers</string>
+    <string name="facebook_app_id">544496790677082</string>
+    <string name="fb_login_protocol_scheme">fb544496790677082</string>
+    <string name="facebook_client_token">9f1cbd930475b67d1dbdd44caabb5a9e</string>
+</resources>

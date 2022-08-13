@@ -5,10 +5,17 @@ import 'package:amazon_clone_tutorial/features/auth/screens/auth_screen.dart';
 import 'package:amazon_clone_tutorial/features/auth/services/auth_service.dart';
 import 'package:amazon_clone_tutorial/providers/user_provider.dart';
 import 'package:amazon_clone_tutorial/router.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intro_screen_onboarding_flutter/introduction.dart';
+import 'package:intro_screen_onboarding_flutter/introscreenonboarding.dart';
 
-void main() {
+import 'features/auth/screens/auth_screen_new.dart';
+import 'features/auth/screens/welcome.dart';
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Firebase.initializeApp();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
       create: (context) => UserProvider(),
@@ -36,7 +43,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Amazon Clone',
+      title: 'Relishers',
       theme: ThemeData(
         scaffoldBackgroundColor: GlobalVariables.backgroundColor,
         colorScheme: const ColorScheme.light(
@@ -51,11 +58,48 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true, // can remove this line
       ),
       onGenerateRoute: (settings) => generateRoute(settings),
-      home: Provider.of<UserProvider>(context).user.token.isNotEmpty
-          ? Provider.of<UserProvider>(context).user.type == 'user'
-              ? const BottomBar()
-              : const AdminScreen()
-          : const AuthScreen(),
+      home: TestScreen(),
+    );
+  }
+}
+
+class TestScreen extends StatelessWidget {
+  final List<Introduction> list = [
+    Introduction(
+
+      subTitle: 'Browse the menu and order directly from the application',
+      imageUrl: 'assets/images/s1.png',
+    ),
+    Introduction(
+
+      subTitle: 'Pick up delivery at your door and enjoy products',
+      imageUrl: 'assets/images/s2.jpg',
+    ),
+    Introduction(
+
+      subTitle: 'Cofirm your order and pay securely and instantly',
+      imageUrl: 'assets/images/s3.jpg',
+    ),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return IntroScreenOnboarding(
+      introductionList: list,
+      onTapSkipButton: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>Provider.of<UserProvider>(context).user.token.isNotEmpty
+                ? Provider.of<UserProvider>(context).user.type == 'user'
+                ? const BottomBar()
+                : const AdminScreen()
+                : SecondRoute(),
+          ), //MaterialPageRoute
+        );
+      },
+      backgroudColor: Colors.white,skipTextStyle: const TextStyle(color: Colors.black,fontSize: 20,fontFamily: "Schyler"),
+      foregroundColor: Color(0xffb829f6),
     );
   }
 }

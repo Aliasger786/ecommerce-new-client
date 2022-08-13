@@ -5,6 +5,7 @@ class User {
   final String name;
   final String email;
   final String password;
+  final String phone;
   final String address;
   final String type;
   final String token;
@@ -15,10 +16,11 @@ class User {
     required this.name,
     required this.email,
     required this.password,
+    required this.phone,
     required this.address,
     required this.type,
     required this.token,
-    required this.cart,
+    required this.cart
   });
 
   Map<String, dynamic> toMap() {
@@ -27,6 +29,7 @@ class User {
       'name': name,
       'email': email,
       'password': password,
+      'phone': phone,
       'address': address,
       'type': type,
       'token': token,
@@ -40,6 +43,7 @@ class User {
       name: map['name'] ?? '',
       email: map['email'] ?? '',
       password: map['password'] ?? '',
+      phone: map['phone'] ?? '',
       address: map['address'] ?? '',
       type: map['type'] ?? '',
       token: map['token'] ?? '',
@@ -60,6 +64,7 @@ class User {
     String? name,
     String? email,
     String? password,
+    String? phone,
     String? address,
     String? type,
     String? token,
@@ -70,6 +75,7 @@ class User {
       name: name ?? this.name,
       email: email ?? this.email,
       password: password ?? this.password,
+      phone: phone ?? this.phone,
       address: address ?? this.address,
       type: type ?? this.type,
       token: token ?? this.token,

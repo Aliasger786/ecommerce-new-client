@@ -5,6 +5,8 @@ import 'package:amazon_clone_tutorial/features/home/widgets/deal_of_day.dart';
 import 'package:amazon_clone_tutorial/features/home/widgets/top_categories.dart';
 import 'package:amazon_clone_tutorial/features/search/screens/search_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home';
@@ -21,6 +23,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
+    FlutterStatusbarcolor.setNavigationBarColor(Colors.transparent);
+    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),

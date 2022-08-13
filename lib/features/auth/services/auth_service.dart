@@ -7,11 +7,13 @@ import 'package:amazon_clone_tutorial/constants/utils.dart';
 import 'package:amazon_clone_tutorial/models/user.dart';
 import 'package:amazon_clone_tutorial/providers/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
+  var ph="";
   // sign up user
   void signUpUser({
     required BuildContext context,
@@ -25,6 +27,7 @@ class AuthService {
         name: name,
         password: password,
         email: email,
+        phone: '',
         address: '',
         type: '',
         token: '',
@@ -53,6 +56,97 @@ class AuthService {
       showSnackBar(context, e.toString());
     }
   }
+
+  void signUpUserbyPhone({
+    required BuildContext context,
+    required String phone,
+  }) async {
+    try {
+      User user = User(
+        id: '',
+        name: '',
+        password: '',
+        email: '',
+        phone: phone.toString(),
+        address: '',
+        type: '',
+        token: '',
+        cart: [],
+      );
+
+      http.Response res = await http.post(
+        Uri.parse('$uri/api/signup'),
+        body: user.toJson(),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          showSnackBar(
+            context,
+            'Account created! Login with the same credentials!',
+          );
+          signInUserbyPhone(context: context,
+              phone: phone.toString());
+        },
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
+
+
+  void signUpUserbyEmail({
+    required BuildContext context,
+    required String email,
+    required String name,
+    required String phone
+  }) async {
+    try {
+      User user = User(
+        id: '',
+        name: name.toString(),
+        password: '',
+        email: email.toString(),
+        phone: phone.toString(),
+        address: '',
+        type: '',
+        token: '',
+        cart: [],
+      );
+
+      http.Response res = await http.post(
+        Uri.parse('$uri/api/signup'),
+        body: user.toJson(),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+
+      httpErrorHandle3(
+        response: res,
+        context: context,
+        onSuccess: () {
+          showSnackBar(
+            context,
+            'Account created! Login with the same credentials!',
+          );
+          signInUserbyEmail(context: context, email: email.toString(), name: name.toString(), phone: phone.toString());
+        },
+          email: email.toString(),
+          name: name.toString(),
+          phone: phone.toString()
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
+
+
 
   // sign in user
   void signInUser({
@@ -87,6 +181,94 @@ class AuthService {
       );
     } catch (e) {
       showSnackBar(context, e.toString());
+    }
+  }
+
+  void signInUserbyPhone({
+    required BuildContext context,
+    required String phone,
+
+  }) async {
+    try {
+      http.Response res = await http.post(
+        Uri.parse('$uri/api/signin'),
+        body: jsonEncode({
+          'phone': phone.toString(),
+
+        }),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+      httpErrorHandle1(
+        response: res,
+        context: context,
+        onSuccess: () async {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          Provider.of<UserProvider>(context, listen: false).setUser(res.body);
+          await prefs.setString('x-auth-token', jsonDecode(res.body)['token']);
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            BottomBar.routeName,
+                (route) => false,
+          );
+        },
+        phone: phone.toString(),
+
+
+      );
+    } catch (e) {
+
+
+
+    }
+  }
+
+
+
+
+
+  void signInUserbyEmail({
+    required BuildContext context,
+    required String email,
+    required String name,
+    required String phone
+  }) async {
+    try {
+      http.Response res = await http.post(
+        Uri.parse('$uri/api/signin'),
+        body: jsonEncode({
+          'email': email.toString(),
+          'name': name.toString(),
+          'phone': phone.toString()
+
+        }),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+      httpErrorHandle2(
+        response: res,
+        context: context,
+        onSuccess: () async {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          Provider.of<UserProvider>(context, listen: false).setUser(res.body);
+          await prefs.setString('x-auth-token', jsonDecode(res.body)['token']);
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            BottomBar.routeName,
+                (route) => false,
+          );
+        },
+        email: email.toString(),
+        name: name.toString(), phone: phone.toString()
+
+
+      );
+    } catch (e) {
+
+
+
     }
   }
 
