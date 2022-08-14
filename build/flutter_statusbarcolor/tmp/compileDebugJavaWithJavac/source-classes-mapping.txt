@@ -1,2 +1,0 @@
-com/fuyumi/flutterstatusbarcolor/flutterstatusbarcolor/BuildConfig.java
- com.fuyumi.flutterstatusbarcolor.flutterstatusbarcolor.BuildConfig

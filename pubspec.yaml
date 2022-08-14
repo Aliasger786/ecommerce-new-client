@@ -57,6 +57,9 @@ dependencies:
   google_sign_in: ^5.3.3
   flutter_facebook_auth: ^3.5.0
   pin_code_fields: ^7.4.0
+  account_picker: ^2.0.0
+  telephony: ^0.2.0
+
 
 dev_dependencies:
   flutter_test:

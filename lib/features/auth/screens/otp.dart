@@ -13,6 +13,7 @@ import '../../../providers/user_provider.dart';
 import '../../admin/screens/admin_screen.dart';
 import '../../home/screens/home_screen.dart';
 import '../services/auth_service.dart';
+import 'package:telephony/telephony.dart';
 
 class Otp extends StatefulWidget {
   var phone,cphone,verificationcode;
@@ -27,6 +28,33 @@ class _OtpState extends State<Otp> {
   var otpcode;
   TextEditingController textEditingController = TextEditingController();
   final AuthService authService = AuthService();
+  Telephony telephony = Telephony.instance;
+
+  @override
+  void initState() {
+    telephony.listenIncomingSms(
+      onNewMessage: (SmsMessage message) {
+        print(message.address); //+977981******67, sender nubmer
+        print(message.body); //Your OTP code is 34567
+        print(message.date); //1659690242000, timestamp
+        String sms = message.body.toString();
+        otpcode=sms.substring(0,6);
+        Fluttertoast.showToast(
+            msg: otpcode,
+
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+
+            backgroundColor: Colors.red,
+            textColor: Colors.white
+
+        );
+        textEditingController.text=otpcode;
+      },
+      listenInBackground: false,
+    );
+    super.initState();
+  }
   String currentText = "";
   _OtpState({required this.p1,required this.p2});
   @override

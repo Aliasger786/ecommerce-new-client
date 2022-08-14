@@ -4,6 +4,9 @@ import 'package:amazon_clone_tutorial/constants/global_variables.dart';
 import 'package:amazon_clone_tutorial/features/auth/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
+import '../../../common/widgets/custom_textfield1.dart';
+import '../../../common/widgets/custom_textfield2.dart';
+
 enum Auth {
   signin,
   signup,
@@ -25,6 +28,7 @@ class _AuthScreenState extends State<AuthScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
+
 
   @override
   void dispose() {
@@ -102,7 +106,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           hintText: 'Name',
                         ),
                         const SizedBox(height: 10),
-                        CustomTextField(
+                        CustomTextField2(
                           controller: _emailController,
                           hintText: 'Email',
                         ),
@@ -153,7 +157,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     key: _signInFormKey,
                     child: Column(
                       children: [
-                        CustomTextField(
+                        CustomTextField1(
                           controller: _emailController,
                           hintText: 'Email',
                         ),

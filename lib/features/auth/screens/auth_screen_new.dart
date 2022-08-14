@@ -1,7 +1,9 @@
 import 'dart:developer';
 
+
 /*import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';*/
+import 'package:account_picker/account_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,10 +11,12 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 /*import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';*/
-import 'package:intl_phone_field/intl_phone_field.dart';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:intl_phone_field/phone_number.dart';
 
 import '../services/auth_service.dart';
 import 'auth_screen.dart';
@@ -36,6 +40,8 @@ class _MyHomePageState extends State<SecondRoute> {
   var femail="";
   var fname="";
   var fphone="";
+  var checker=0;
+  var cc="";
   final AuthService authService = AuthService();
   bool otpsent=false;
   final _controller = TextEditingController();
@@ -90,14 +96,25 @@ class _MyHomePageState extends State<SecondRoute> {
 
                                       textAlignVertical: TextAlignVertical.center,
                                       controller: _controller,
-
-
-                                      onChanged: (phone) {
+                                      onChanged: (phone)  {
                                         setState(() {
-                                          inputText = phone.number ;
+                                          inputText = phone.number;
                                           cphone=phone.completeNumber;
                                         });
                                       },
+                                      onTap: () async {
+                                        if(checker==0){
+                                          checker=1;
+                                          cphone=(await AccountPicker.phoneHint())!;
+                                          cphone=cphone.toString().trim();
+                                          var ccode="+91";
+                                          var lc=ccode.length;
+                                          inputText=cphone.substring(lc);
+                                          showToast();
+
+                                        }
+                                      },
+
                                       decoration: InputDecoration(
                                         hintText: 'Enter Phone Number',
                                         suffixIcon: hidingIcon(),
